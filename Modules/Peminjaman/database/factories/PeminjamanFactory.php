@@ -1,0 +1,25 @@
+<?php
+
+namespace Modules\Peminjaman\Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Peminjaman\Models\Peminjaman;
+
+class PeminjamanFactory extends Factory
+{
+    protected $model = Peminjaman::class;
+
+    public function definition(): array
+    {
+        $pinjam = fake()->dateTimeBetween('-1 month', 'now');
+        $kembali = (clone $pinjam)->modify('+7 days');
+
+        return [
+            'nama_peminjam' => fake()->name(),
+            'judul_buku' => fake()->sentence(3),
+            'tanggal_pinjam' => $pinjam->format('Y-m-d'),
+            'tanggal_kembali' => $kembali->format('Y-m-d'),
+            'status' => fake()->randomElement(['Dipinjam', 'Dikembalikan']),
+        ];
+    }
+}
